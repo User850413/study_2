@@ -1,0 +1,20 @@
+.headerWrapper{
+    z-index:100;
+    background-color: #fefefe;
+    display:flex;
+    flex-direction:column;
+    min-width:100px;
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 20px;
+
+    & ul {
+        display:flex;
+        flex-direction:column;
+        gap:25px;
+    }
+}
