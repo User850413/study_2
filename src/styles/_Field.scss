@@ -1,6 +1,8 @@
+@use "./Theme" as theme;
+
 .headerWrapper{
     z-index:100;
-    background-color: #fefefe;
+    background-color: theme.$theme;
     display:flex;
     flex-direction:column;
     min-width:100px;

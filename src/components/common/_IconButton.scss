@@ -1,5 +1,8 @@
+@use "../../styles/Theme" as theme;
+
 .iconBtn {
-    border: 1px solid #ddd;
+    background-color: theme.$theme;
+    border: 1px solid theme.$primary;
 
     &.md{
         width:60px;
@@ -12,13 +15,14 @@
     & svg{
         width:100%;
         height:100%;
+        fill: theme.$text;
     }
 
     &:hover{
-        background-color: #eee;
+        background-color: theme.$bg-lighter;
     }
 
     &.active{
-        background-color: #eee;
+        background-color: theme.$bg-lighter;
     }
 }

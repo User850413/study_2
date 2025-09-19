@@ -1,19 +1,33 @@
 :root {
+  --light-theme:#fefefe;
   --bg-light: #eee;
+  --bg-light-lighter:#efefef;
   --light-lighter: #D1DDF8;
   --light-primary: #AEBAD2;
   --light-darker: #8792AE;
   --light-text: #333;
 
+  --dark-theme:#121212;
   --bg-dark: #333;
+  --bg-dark-lighter:#555;
   --dark-lighter: #FBFCD4;
   --dark-primary: #FFDD03;
   --dark-darker: #FBC403;
   --dark-text: #FBFCD4;
+
+  --theme: var(--light-theme);
+  --bg: var(--bg-light);
+  --bg-lighter: var(--bg-light-lighter);
+  --primary: var(--light-primary);
+  --lighter: var(--light-lighter);
+  --darker: var(--light-darker);
+  --text: var(--light-text);
 }
 
 :root[data-theme="dark"] {
+  --theme: var(--dark-theme);
   --bg: var(--bg-dark);
+  --bg-lighter: var(--bg-dark-lighter);
   --primary: var(--dark-primary);
   --lighter: var(--dark-lighter);
   --darker: var(--dark-darker);
@@ -21,14 +35,18 @@
 }
 
 :root[data-theme="light"] {
+  --theme:var(--light-theme);
   --bg: var(--bg-light);
+  --bg-lighter: var(--bg-light-lighter);
   --primary: var(--light-primary);
   --lighter: var(--light-lighter);
   --darker: var(--light-darker);
   --text: var(--light-text);
 }
 
+$theme: var(--theme);
 $bg: var(--bg);
+$bg-lighter: var(--bg-lighter);
 $primary: var(--primary);
 $lighter: var(--lighter);
 $darker: var(--darker);
