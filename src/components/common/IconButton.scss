@@ -1,0 +1,24 @@
+.iconBtn {
+    border: 1px solid #ddd;
+
+    &.md{
+        width:60px;
+        height:60px;
+        font-size: large;
+        padding:5px;
+        border-radius: 10px;
+    }
+
+    & svg{
+        width:100%;
+        height:100%;
+    }
+
+    &:hover{
+        background-color: #eee;
+    }
+
+    &.active{
+        background-color: #eee;
+    }
+}
