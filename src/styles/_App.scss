@@ -1,0 +1,5 @@
+@use "./Theme" as theme;
+
+body{
+    background-color: theme.$bg;
+}

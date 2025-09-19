@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import "./IconButton.scss"
 import clsx from "clsx";
 
 const IconButton = ({areaLabel, icon, size, isActivable=false, onClick}) => {

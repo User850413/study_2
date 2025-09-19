@@ -1,0 +1,35 @@
+:root {
+  --bg-light: #eee;
+  --light-lighter: #D1DDF8;
+  --light-primary: #AEBAD2;
+  --light-darker: #8792AE;
+  --light-text: #333;
+
+  --bg-dark: #333;
+  --dark-lighter: #FBFCD4;
+  --dark-primary: #FFDD03;
+  --dark-darker: #FBC403;
+  --dark-text: #FBFCD4;
+}
+
+:root[data-theme="dark"] {
+  --bg: var(--bg-dark);
+  --primary: var(--dark-primary);
+  --lighter: var(--dark-lighter);
+  --darker: var(--dark-darker);
+  --text: var(--dark-text);
+}
+
+:root[data-theme="light"] {
+  --bg: var(--bg-light);
+  --primary: var(--light-primary);
+  --lighter: var(--light-lighter);
+  --darker: var(--light-darker);
+  --text: var(--light-text);
+}
+
+$bg: var(--bg);
+$primary: var(--primary);
+$lighter: var(--lighter);
+$darker: var(--darker);
+$text: var(--text);

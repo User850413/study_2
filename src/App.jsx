@@ -2,8 +2,6 @@ import Main from './Pages/Main';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import InfoProvider from './context/InfoProvider';
 import Field from './Pages/Field';
-import "./App.css";
-
 
 function App() {
 
