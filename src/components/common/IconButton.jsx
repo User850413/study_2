@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import clsx from "clsx";
 
-const IconButton = ({areaLabel, icon, size, isActivable=false, onClick}) => {
-    const [ isActive, setIsActive ] = useState(false);
+const IconButton = (props) => {
+    let { areaLabel, icon, size, isActivable=false, onClick, activeState=false, name, ...btnProps } = props;
+
+    const [ isActive, setIsActive ] = useState(activeState);
 
     if (!areaLabel) console.warn("areaLabel should be added")
     if (!size) size = "md"
@@ -13,15 +15,19 @@ const IconButton = ({areaLabel, icon, size, isActivable=false, onClick}) => {
     // 추가된 onClick
     const addedOnClick = onClick;
 
-    const handleClick = useCallback(() => {
+    const handleClick = useCallback((e) => {
         if(typeof addedOnClick === 'function'){
-            addedOnClick();
+            addedOnClick(e);
         }else if(!isActivable){
             console.log("btn clicked but no onClick provided");
         }
 
         if(isActivable) setIsActive(prev => !prev);
     }, [addedOnClick, isActivable])
+
+    useEffect(()=>{
+        setIsActive(activeState);
+    }, [activeState])
 
     return (
         <button 
@@ -30,8 +36,10 @@ const IconButton = ({areaLabel, icon, size, isActivable=false, onClick}) => {
             className={clsx(
                 "iconBtn",
                 size,
-                isActivable && isActive && "active",
+                isActivable && isActive ? "active": "",
             )}
+            name={name}
+            {...btnProps}
             >            
             {icon}
         </button>

@@ -1,14 +1,15 @@
 import { createRoot } from "react-dom/client";
 
-
 class Modal {
     constructor( {
-        className = '',
-        closeOnDim = true,
-        closeOnEsc = true,
-        onOpen = null,
-        onClose = null
+        title               = '모달 제목',
+        className           = '',
+        closeOnDim          = true,
+        closeOnEsc          = true,
+        onOpen              = null,
+        onClose             = null
     } = {} ){
+        this.title          = title;
         this.className      = className;
         this.closeOnDim     = closeOnDim;
         this.closeOnEsc     = closeOnEsc;
@@ -32,12 +33,17 @@ class Modal {
 
         root.innerHTML = `
             <div class="modal_dim"></div>
-            <div class="modal_area"></div>
+            <div class="modal_area">
+                <div class="modal_header"><p>${this.title}</p><span class="modalCloseBtn">x</span></div>
+                <div class="modal_content"></div>
+            </div>
         `
 
+        const closeBtn = root.querySelector(".modalCloseBtn");
         const dim = root.querySelector(".modal_dim");
-        const area = root.querySelector(".modal_area");
+        const content = root.querySelector(".modal_content");
 
+        closeBtn.addEventListener("click", () => this.close());
         if (this.closeOnDim) dim.addEventListener("click", () => this.close());
 
         this._keydown = (e) => {
@@ -45,7 +51,7 @@ class Modal {
         }
 
         this.root = root;
-        this.area = area;
+        this.area = content;
     }
 
     _ensureBuilt() {
