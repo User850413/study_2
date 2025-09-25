@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useState } from "react";
 
 import BackpackIcon from '@mui/icons-material/Backpack';
 import IconButton from "../../components/common/IconButton";
@@ -8,17 +8,23 @@ import HomeIcon from '@mui/icons-material/Home';
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
 import BedtimeIcon from '@mui/icons-material/Bedtime';
 import { ThemeContext } from "../../context/ThemeProvider";
+import Modal from "../../components/common/Modal";
 
 
 const Field = () => {
     const { toggleTheme } = useContext(ThemeContext);
+
+    const [ inventory, setInventory ] = useState(true);
+
+    // 테스트 모달 창 열기
+    const testModal = new Modal({isOpen:inventory});
 
     return (
         <Fragment>
             <div className="headerWrapper">
                 <ul>
                     <li>
-                        <IconButton icon={<BackpackIcon />} isActivable areaLabel="inventory" />
+                        <IconButton icon={<BackpackIcon />} isActivable areaLabel="inventory" onClick={()=>setInventory(prev=>!prev)} />
                     </li>
                     <li>
                         <IconButton icon={<AccessibilityIcon />} isActivable areaLabel="user" />
