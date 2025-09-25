@@ -1,65 +1,111 @@
+import { createRoot } from "react-dom/client";
+
 
 class Modal {
     constructor( {
         className = '',
-        isOpen = false, 
-        onOpen = null, 
-        onClose = null, 
-        message ='비어있습니다',
-        contentNode =  null
+        closeOnDim = true,
+        closeOnEsc = true,
+        onOpen = null,
+        onClose = null
     } = {} ){
-        this.className = className;
-        this.isOpen = Boolean(isOpen);
-        this.onOpen = typeof onOpen === "function" ? onOpen : null;
-        this.onClose = typeof onClose === "function" ? onClose : null;
+        this.className      = className;
+        this.closeOnDim     = closeOnDim;
+        this.closeOnEsc     = closeOnEsc;
+        this.onOpen         = typeof onOpen == "function" ? onOpen : null;
+        this.onClose        = typeof onClose == "function" ? onClose : null;
 
-        this.message = contentNode ? null : String(message);
-        this.contentNode = contentNode ?? null;
+        this.isOpen         = false;
+        this.root           = null;
+        this.area           = null;
+        this._reactRoot     = null;
+        this._prevFocus     = null;
+        this._keydown       = null;
     }
 
     _build() {
         const root = document.createElement("div");
         root.className = `modal ${this.className}`.trim();
-        root.setAttribute('role', 'dialog');
-        root.setAttribute('aria-modal', 'true');
+        root.setAttribute("role", "dialog");
+        root.setAttribute("aria-modal", "true");
+        root.setAttribute("tabIndex", "-1");
 
         root.innerHTML = `
             <div class="modal_dim"></div>
-            <div class="modal_area ${this.className}"></div>
+            <div class="modal_area"></div>
         `
-        
-        const body = root.querySelector(".modal_area");
-        root.querySelector(".modal_dim").addEventListener("click", () => this.close());
-        
-        if(this.contentNode instanceof Node) body.appendChild(this.contentNode);
-        else body.innerHTML = String(this.contentNode ?? this.message ?? '비어있습니다.');
+
+        const dim = root.querySelector(".modal_dim");
+        const area = root.querySelector(".modal_area");
+
+        if (this.closeOnDim) dim.addEventListener("click", () => this.close());
+
+        this._keydown = (e) => {
+            if(this.closeOnEsc && e.key =="Escape") this.close();
+        }
 
         this.root = root;
+        this.area = area;
+    }
+
+    _ensureBuilt() {
+        if(!this.root) this._build();
+    }
+
+    _lockScroll() {
+        this._prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+    }
+
+    _unlockScroll() {
+        document.body.style.overflow = this._prevOverflow || '';
     }
 
     open() {
         if(this.isOpen) return;
-        if(!this.root) this._build();
+        this._ensureBuilt();
+
         this.isOpen = true;
+        this._prevFocus = document.activeElement;
+
         document.body.appendChild(this.root);
+        document.addEventListener('keydown', this._keydown);
+        this._lockScroll();
+
+        this.root.focus();
+
         if(this.onOpen) this.onOpen();
+    }
+
+    render(reactElement) {
+        this._ensureBuilt();
+        if(!this._reactRoot) {
+            this._reactRoot = createRoot(this.area);
+        }
+        this._reactRoot.render(reactElement);
     }
 
     close() {
         if(!this.isOpen) return;
         this.isOpen = false;
+
         if(this.root?.parentNode) this.root.parentNode.removeChild(this.root);
+        document.removeEventListener('keydown', this._keydown);
+        this._unlockScroll();
+
+        if(this._prevFocus?.focus) this._prevFocus.focus();
+
         if(this.onClose) this.onClose();
     }
 
-    setMessage(msg) {
-        this.message = String(msg);
-        this.contentNode = null;
-    }
-
-    setContentNode(node) {
-        this.contentNode = node;
-        this.message = null;
+    destroy() {
+        this.close();
+        if(this._reactRoot) {
+            this._reactRoot.unmount();
+            this._reactRoot = null;
+        }
+        this.root = null;
+        this.area = null;
     }
 }
 
